@@ -1,0 +1,6 @@
+.venv/
+signatures/
+.*
+!.gitignore
+.idx/
+detector/__pycache__

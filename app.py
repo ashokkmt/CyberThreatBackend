@@ -13,6 +13,11 @@ CORS(app)
 
 trie = load_trie_from_file("short_signatures.json")
 
+@app.route("/")
+def home():
+    print("home")
+    return "Hello, World!"
+
 @app.route("/activity", methods=["POST"])
 def output():
     data = request.get_json()  
