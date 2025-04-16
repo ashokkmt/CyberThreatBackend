@@ -16,7 +16,7 @@ trie = load_trie_from_file("short_signatures.json")
 @app.route("/")
 def home():
     print("home")
-    return "Hello, World!"
+    return 'Hello Programmer, Visit our <a href="https://github.com/ashokkmt/CyberThreatBackend" target="_blank">GitHub</a>!'
 
 @app.route("/activity", methods=["POST"])
 def output():

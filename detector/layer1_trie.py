@@ -30,7 +30,7 @@ class Trie:
         return False, None
 
 
-# Initialize Trie with patterns from JSON
+# building tree from json file
 def load_trie_from_file(filepath: str) -> Trie:
     trie = Trie()
     with open(filepath, "r", encoding="utf-8") as f:
