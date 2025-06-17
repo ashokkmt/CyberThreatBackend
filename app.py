@@ -1,37 +1,19 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import json
 from detector.layer1_trie import load_trie_from_file
+from detector.layer3_ml import extract_features
 from detector.layer2_fsm import (
     is_valid_sql,
     contains_script_tag,
     contains_xss_patterns
 )
 import joblib
-import math
-import re
-from collections import Counter
 
 app = Flask(__name__)
 CORS(app) 
 
 model = joblib.load("attack_classifier.pkl")
 trie = load_trie_from_file("short_signatures.json")
-
-def shannon_entropy(s):
-    if not s:
-        return 0
-    probabilities = [n_x / len(s) for x, n_x in Counter(s).items()]
-    return -sum(p * math.log2(p) for p in probabilities)
-
-def extract_features(s):
-    length = len(s)
-    entropy = shannon_entropy(s)
-    num_quotes = s.count("'") + s.count('"')
-    has_script = 1 if "<script>" in s.lower() else 0
-    has_sql_keywords = 1 if re.search(r"\b(SELECT|UNION|DROP|--|OR 1=1|INSERT|DELETE|UPDATE)\b", s, re.IGNORECASE) else 0
-    special_char_ratio = len(re.findall(r"[^a-zA-Z0-9\s]", s)) / (length + 1e-6)
-    return [length, entropy, num_quotes, has_script, has_sql_keywords, special_char_ratio]
 
 
 @app.route("/")
@@ -93,13 +75,27 @@ def detect():
             "flag": True
         })
 
-    # If all layers passed
+    # ------- Layer 3: ML Classification -------   
+    features = extract_features(user_input)
+    prediction = model.predict([features])[0]
+    label_map = {0: "Safe", 1: "XSS Attack", 2: "SQL Injection"}
+
+    if prediction != 0:
+        print("found in layer 3 ML")
+        return jsonify({
+            "layer": 3,
+            "result": f"⚠️ {label_map[prediction]} detected by ML Classifier",
+            "match": f"Predicted as: {label_map[prediction]}",
+            "flag": True
+        })
+
+    # All Layers Passed
     return jsonify({
-        "layer": 2,
-        "result": "✅ Input passed Layer 1 and Layer 2 (no attack found)",
-        "match": "Nothing suspicious found",
+        "layer": 3,
+        "result": "✅ Input passed all layers (Safe)",
+        "match": "No attack detected",
         "flag": False
-    })
+    })  
 
 
 @app.route('/detect', methods=['POST'])

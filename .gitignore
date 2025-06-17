@@ -7,4 +7,4 @@ detector/__pycache__
 *.csv
 *.txt
 test.py
-!final*
+detector/generate*
