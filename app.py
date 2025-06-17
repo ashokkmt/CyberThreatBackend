@@ -7,11 +7,32 @@ from detector.layer2_fsm import (
     contains_script_tag,
     contains_xss_patterns
 )
+import joblib
+import math
+import re
+from collections import Counter
 
 app = Flask(__name__)
 CORS(app) 
 
+model = joblib.load("attack_classifier.pkl")
 trie = load_trie_from_file("short_signatures.json")
+
+def shannon_entropy(s):
+    if not s:
+        return 0
+    probabilities = [n_x / len(s) for x, n_x in Counter(s).items()]
+    return -sum(p * math.log2(p) for p in probabilities)
+
+def extract_features(s):
+    length = len(s)
+    entropy = shannon_entropy(s)
+    num_quotes = s.count("'") + s.count('"')
+    has_script = 1 if "<script>" in s.lower() else 0
+    has_sql_keywords = 1 if re.search(r"\b(SELECT|UNION|DROP|--|OR 1=1|INSERT|DELETE|UPDATE)\b", s, re.IGNORECASE) else 0
+    special_char_ratio = len(re.findall(r"[^a-zA-Z0-9\s]", s)) / (length + 1e-6)
+    return [length, entropy, num_quotes, has_script, has_sql_keywords, special_char_ratio]
+
 
 @app.route("/")
 def home():
@@ -28,7 +49,6 @@ def output():
 @app.route("/api/detect", methods=["POST"])
 def detect():
     data = request.get_json()
-    # input_text = data.get("input", "")
     
     print(data['data'])
     user_input = data['data']
@@ -79,6 +99,25 @@ def detect():
         "result": "✅ Input passed Layer 1 and Layer 2 (no attack found)",
         "match": "Nothing suspicious found",
         "flag": False
+    })
+
+
+@app.route('/detect', methods=['POST'])
+def detect_attack():
+    data = request.get_json()
+    user_input = data.get('input', '')
+    if not user_input:
+        return jsonify({"error": "No input provided"}), 400
+
+    features = extract_features(user_input)
+    prediction = model.predict([features])[0]
+
+    label_map = {0: "Safe", 1: "XSS Attack", 2: "SQL Injection"}
+
+    return jsonify({
+        "input": user_input,
+        "prediction": int(prediction),
+        "label": label_map[prediction]
     })
 
 
