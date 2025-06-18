@@ -10,7 +10,7 @@ from detector.layer2_fsm import (
 import joblib
 
 app = Flask(__name__)
-CORS(app) 
+CORS(app)
 
 model = joblib.load("attack_classifier.pkl")
 trie = load_trie_from_file("short_signatures.json")
@@ -21,17 +21,11 @@ def home():
     print("home")
     return 'Hello Programmer, Visit our <a href="https://github.com/ashokkmt/CyberThreatBackend" target="_blank">GitHub</a>!'
 
-@app.route("/activity", methods=["POST"])
-def output():
-    data = request.get_json()  
-    # data = json.loads(data)
-    print(data['data'])
-    return jsonify({"message": "Data received", "received_data": data})
 
 @app.route("/api/detect", methods=["POST"])
 def detect():
     data = request.get_json()
-    
+
     print(data['data'])
     user_input = data['data']
     found, matched = trie.search(user_input)
@@ -61,7 +55,7 @@ def detect():
         return jsonify({
             "layer": 2,
             "result": f"⚠️ XSS pattern '{xss_match}' detected by FSM",
-            "match":xss_match,
+            "match": xss_match,
             "flag": True
         })
 
@@ -75,7 +69,7 @@ def detect():
             "flag": True
         })
 
-    # ------- Layer 3: ML Classification -------   
+    # ------- Layer 3: ML Classification -------
     features = extract_features(user_input)
     prediction = model.predict([features])[0]
     label_map = {0: "Safe", 1: "XSS Attack", 2: "SQL Injection"}
@@ -95,26 +89,94 @@ def detect():
         "result": "✅ Input passed all layers (Safe)",
         "match": "No attack detected",
         "flag": False
-    })  
+    })
 
 
-@app.route('/detect', methods=['POST'])
+@app.route('/api/detect2', methods=['POST'])
 def detect_attack():
     data = request.get_json()
-    user_input = data.get('input', '')
-    if not user_input:
-        return jsonify({"error": "No input provided"}), 400
 
-    features = extract_features(user_input)
-    prediction = model.predict([features])[0]
+    fields_to_check = ['fname', 'message', 'email']  # only analyze these
+    attack_detected = False
+    highest_layer = 0
+    combined_matches = []
+    result_messages = []
 
-    label_map = {0: "Safe", 1: "XSS Attack", 2: "SQL Injection"}
+    for field in fields_to_check:
+        if field not in data:
+            continue
 
-    return jsonify({
-        "input": user_input,
-        "prediction": int(prediction),
-        "label": label_map[prediction]
-    })
+        user_input = data[field]
+        print(f"Checking field: {field} => {user_input}")
+
+        # Layer 1: Trie Pattern
+        found, matched = trie.search(user_input)
+        if found:
+            attack_detected = True
+            highest_layer = max(highest_layer, 1)
+            combined_matches.append(f"[{field}] {matched}")
+            result_messages.append(
+                f"⚠️ '{matched}' detected in '{field}' (Layer 1 - Pattern)")
+            continue
+
+        # Layer 2: Script Tag
+        if contains_script_tag(user_input):
+            attack_detected = True
+            highest_layer = max(highest_layer, 2)
+            combined_matches.append(f"[{field}] <script>")
+            result_messages.append(
+                f"⚠️ <script> tag in '{field}' detected by FSM")
+            continue
+
+        # Layer 2: XSS Pattern
+        found_xss, xss_match = contains_xss_patterns(user_input)
+        if found_xss:
+            attack_detected = True
+            highest_layer = max(highest_layer, 2)
+            combined_matches.append(f"[{field}] {xss_match}")
+            result_messages.append(
+                f"⚠️ XSS pattern '{xss_match}' in '{field}' by FSM")
+            continue
+
+        # Layer 2: SQL Grammar
+        if not is_valid_sql(user_input):
+            attack_detected = True
+            highest_layer = max(highest_layer, 2)
+            combined_matches.append(f"[{field}] Invalid SQL")
+            result_messages.append(
+                f"⚠️ SQL structure invalid in '{field}' (FSM)")
+            continue
+
+        # Layer 3: ML Classifier
+        features = extract_features(user_input)
+        prediction = model.predict([features])[0]
+        label_map = {0: "Safe", 1: "XSS Attack", 2: "SQL Injection"}
+
+        if prediction != 0:
+            attack_detected = True
+            highest_layer = max(highest_layer, 3)
+            attack_type = label_map[prediction]
+            combined_matches.append(f"[{field}] {attack_type}")
+            result_messages.append(
+                f"⚠️ {attack_type} in '{field}' detected by ML")
+            continue
+
+        print(f"{field} is safe.")
+
+    if attack_detected:
+        return jsonify({
+            "layer": highest_layer,
+            "result": "\n".join(result_messages),
+            "match": "; ".join(combined_matches),
+            "flag": True
+        })
+    else:
+        return jsonify({
+            "layer": 3,
+            "result": "✅ Name and Message passed all layers (Safe)",
+            "match": "No attack detected",
+            "flag": False
+        })
 
 
 if __name__ == "__main__":
